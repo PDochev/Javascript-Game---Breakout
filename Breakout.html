@@ -1,0 +1,438 @@
+ 
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Breakout</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    
+</head>
+<body>
+    <p>Controls (z - x - space) </p>
+    <p id="win"></p>
+    <canvas s id="sCanvas" width="800" height="600" ></canvas>
+    <br>
+    <button  id="retry" onclick="retry()">Retry</button> 
+     <!-- a button with an event assign to it calling the function retry() which refreshes the page (you can press this button after the player win or lose the game) -->
+    
+   
+    <script type="text/javascript">
+        "use strict";
+        //******************
+        // Variables
+        //******************
+        var c = document.getElementById("sCanvas");
+        var ctx = sCanvas.getContext("2d");
+        var cHeight = sCanvas.height;
+        var cWidth = sCanvas.width;
+        var bg = new Image()
+        bg.src = "bg.png"
+        var beep = new Audio('beep.wav');
+        var changedirection = false; 
+        let score1 =   0;  
+        let live = 2;
+        
+
+     
+        document.getElementById('retry').style.visibility = "hidden" // CSS property which hides and elemnt from the page so it can not be seen until it has chanched to "visible"
+        
+              
+        //******************
+        //Objects
+        //******************
+         
+            class Paddle{
+                constructor(x,y){
+                  this.colour = '#e63946';
+                  this.xPos = x;
+                  this.yPos = y;
+                  this.width = 120;
+                  this.height = 15;
+                  this.speed = 10;
+                }
+
+                drawMe(){
+                ctx.beginPath();
+                ctx.rect(this.xPos, this.yPos,this.width, this.height);
+                ctx.fillStyle = this.colour;
+                ctx.fill()
+                ctx.strokeStyle = this.colour;
+                ctx.lineWidth = 5;
+                ctx.stroke();
+                
+                }
+            } 
+
+          
+
+            class Bricks { //I've made a new object to draw the bricks , that was the eisiest way for me to draw the array
+                constructor(x,y,colour){
+                    this.colour = '#' + Math.random().toString(16).substring(2,8);
+                    this.xPos = x;
+                    this.yPos = y;
+                    this.width = 70;
+                    this.height = 20;
+                    this.speed = 10;
+                }
+                drawMe(){
+                ctx.beginPath();
+                ctx.rect(this.xPos, this.yPos,this.width, this.height);
+                ctx.fillStyle = this.colour;
+                ctx.fill()
+                ctx.strokeStyle = "black";
+                ctx.lineWidth = 2;
+                ctx.stroke();
+                
+                }
+            }
+
+       
+        class Sphere {
+            constructor() {
+                    this.radius = 10;
+                    this.colour = "blue";
+                    this.xPos = 400;//Math.random() * cWidth;
+                    this.yPos = 300;//Math.random() * cHeight;
+                    this.speedY = 0 ;// 8 * Math.random();
+                    this.speedX = 0 ;// 8 * Math.random();
+                }
+               
+            drawMe() {
+                //method to draw itself
+                ctx.beginPath();
+                ctx.arc(this.xPos, this.yPos, this.radius, 0, Math.PI * 2, true);
+                ctx.fillStyle = this.colour;
+                ctx.fill();
+              
+            }
+            //method to move itself
+            moveMe(){
+                this.yPos += this.speedY;
+                this.xPos += this.speedX;
+
+                       // bounce off the bottom wall
+            //     if (this.xPos >cHeight-this.radius){
+            // this.speedY = - this.speedY;
+           
+            // }           //bounce off the top wall
+            //     else if(this.yPos<0+this.radius){
+            // this.speedY= -this.speedY;
+            
+            //     }
+                
+                if(ball.xPos + ball.radius > cWidth || ball.xPos - ball.radius < 0){        //collision detection for the ball (top,bottom,left and right wall)
+                    ball.speedX = - ball.speedX
+                   
+                }
+
+                if(ball.yPos + ball.radius > cHeight || ball.yPos - ball.radius < 0){
+                    ball.speedY = -ball.speedY
+                   
+                }
+
+
+
+            if (
+                ball.xPos - ball.radius > player1.xPos && ball.xPos - ball.radius < player1.xPos + player1.width && ball.yPos + ball.radius > player1.yPos){ // collision detection so the ball can bounce back from the paddle 
+                    ball.speedY = -ball.speedY
+                    beep.play();
+                }
+            
+            
+                }
+            }
+            
+
+            //******************
+            // create game objects
+            //******************
+
+            var ball = new Sphere();
+
+            var player1 = new Paddle(340,570);
+        
+            var bricks = [             // an array to draw the bricks at a different positions on the canvas
+                new Bricks(45,30,),
+                new Bricks(135,30), 
+                new Bricks(225,30),
+                new Bricks(315,30),
+                new Bricks(405,30),
+                new Bricks(495,30),
+                new Bricks(585,30),
+                new Bricks(675,30),
+                new Bricks(45,70),
+                new Bricks(135,70), 
+                new Bricks(225,70),
+                new Bricks(315,70),
+                new Bricks(405,70),
+                new Bricks(495,70),
+                new Bricks(585,70),
+                new Bricks(675,70),
+                new Bricks(45,110),
+                new Bricks(135,110), 
+                new Bricks(225,110),
+                new Bricks(315,110),
+                new Bricks(405,110),
+                new Bricks(495,110),
+                new Bricks(585,110),
+                new Bricks(675,110),
+                new Bricks(45,150),
+                new Bricks(135,150), 
+                new Bricks(225,150),
+                new Bricks(315,150),
+                new Bricks(405,150),
+                new Bricks(495,150),
+                new Bricks(585,150),
+                new Bricks(675,150),
+                new Bricks(45,190),
+                new Bricks(135,190), 
+                new Bricks(225,190),
+                new Bricks(315,190),
+                new Bricks(405,190),
+                new Bricks(495,190),
+                new Bricks(585,190),
+                new Bricks(675,190),
+                
+            ];
+
+
+            var keysDown = []; //empty array to store which keys are being held down
+
+
+        window.addEventListener("keydown", function (event) {
+           keysDown[event.keyCode] = true; //store the code for the key being pressed
+        });
+
+        window.addEventListener("keyup", function (event) {
+         delete  keysDown[event.keyCode] ;
+        });
+
+        function checkKeys() {
+
+            if (keysDown[90]) {
+                if(player1.xPos > 0){
+                    player1.xPos -= player1.speed; //z
+                }
+            }
+             
+            if (keysDown[88]) {
+                if(player1.xPos < (cWidth-player1.width) ){
+                    player1.xPos += player1.speed; //x
+                 }
+            }
+            
+            
+        }
+
+        
+               
+
+            //*********************
+            // Make the score board
+            // **********************
+        
+            function scoreBoard(){             // a function to draw the score at the canvas
+                ctx.font = "20px Arial";
+                ctx.fillStyle = "black";
+                ctx.fillText("Score: " + score1,10,25);
+               
+                
+            }
+        
+            //*********************
+            // Make the lives board
+            // **********************
+
+
+            function lives(){     // a function to draw lives on the canvas
+                ctx.font = "20px Arial";
+                ctx.fillStyle = "black";
+                ctx.fillText("Lives: " + live,725,25);
+            }
+            //*********************
+            // launch the ball from the centre, left and right, on space bar
+            // **********************
+ 
+            window.addEventListener("keydown", function(event){
+                if(event.keyCode == 32) {
+                    ball.xPos = 400;
+                    ball.yPos = 300;
+                    ball.speedY = 3;//2 + 3 * Math.random();
+                    ball.speedX = 3;//2 + 3 * Math.random();
+                    if(changedirection) {ball.speedX = - ball.speedX;}
+                    changedirection = !changedirection;
+                
+                }
+            });
+
+           
+
+            
+
+            
+        function render() {
+            requestAnimationFrame(render);
+           
+            ctx.clearRect(0, 0, cWidth, cHeight);
+            ctx.drawImage(bg,0,0,800,600)
+            ball.drawMe();
+            ball.moveMe();
+            player1.drawMe();
+            
+            collisionBricks();
+            createBricks();
+           
+           
+            scoreBoard();
+            lives();
+            
+            detectGameOver()
+            win();
+            lose();
+            retry();
+            checkKeys();
+            
+           
+        }
+
+        function createBricks(){   // a function with a for loop  which goes through the array lenghts and draw all the elements inside
+
+            for (let i = 0; i < bricks.length; i++) {   
+                bricks[i].drawMe();
+            }
+        }
+        
+         function collisionBricks(){
+            bricks.forEach(function(brick)  { // (forEach is an array method that goes through every elemnt in the array and evokes the given function) 
+                if(ball.xPos >= brick.xPos && ball.xPos <= brick.xPos + brick.width && ball.yPos >= brick.yPos && ball.yPos <= brick.yPos +  brick.height){ // the collision for the ball touching the bricks
+                                    ball.speedY = - ball.speedY;
+                                     const elemntToBeRemoved = bricks.indexOf(brick) // making a variable which takes the index of each element in the array
+                                    bricks = bricks.slice(0,elemntToBeRemoved).concat(bricks.slice(elemntToBeRemoved + 1));//a slice method which first removes one elemnt from the array , then I am using the concst function to merge the previes array with the updated one ( This method does not change the existing array, but instead returns a new array.(Updated , with one less element every time we hit a brick))
+                                    
+                                     score1++;
+                                
+
+                                }                          
+                        })
+        }
+
+        
+        function detectGameOver (){
+                if (!(player1.xPos < ball.xPos && ball.xPos < (player1.xPos + player1.width)) && ball.yPos > 590) { // the collision detection fro the ball touching the bottom wall and not touching the paddle , resulting in the score resets  to 0 , -1 live and redrawing the array with the bricks  
+                ball.speedX =0;
+                ball.speedY =0;
+                ball.xPos = 400;
+                ball.yPos = 300;
+                score1 = 0;
+                live--;
+                
+               
+            //     var bricks = [
+            //     new Bricks(45,30),
+            //     new Bricks(135,30), 
+            //     new Bricks(225,30),
+            //     new Bricks(315,30),
+            //     new Bricks(405,30),
+            //     new Bricks(495,30),
+            //     new Bricks(585,30),
+            //     new Bricks(675,30),
+            //     new Bricks(45,70),
+            //     new Bricks(135,70), 
+            //     new Bricks(225,70),
+            //     new Bricks(315,70),
+            //     new Bricks(405,70),
+            //     new Bricks(495,70),
+            //     new Bricks(585,70),
+            //     new Bricks(675,70),
+            //     new Bricks(45,110),
+            //     new Bricks(135,110), 
+            //     new Bricks(225,110),
+            //     new Bricks(315,110),
+            //     new Bricks(405,110),
+            //     new Bricks(495,110),
+            //     new Bricks(585,110),
+            //     new Bricks(675,110),
+            //     new Bricks(45,150),
+            //     new Bricks(135,150), 
+            //     new Bricks(225,150),
+            //     new Bricks(315,150),
+            //     new Bricks(405,150),
+            //     new Bricks(495,150),
+            //     new Bricks(585,150),
+            //     new Bricks(675,150),
+            //     new Bricks(45,190),
+            //     new Bricks(135,190), 
+            //     new Bricks(225,190),
+            //     new Bricks(315,190),
+            //     new Bricks(405,190),
+            //     new Bricks(495,190),
+            //     new Bricks(585,190),
+            //     new Bricks(675,190),
+            // ];
+            
+            // for (let i = 0; i < bricks.length; i++) {   
+            //     bricks[i].drawMe();
+
+                
+            // }
+              
+                }
+               
+            }
+            
+            function win(){ // function which check if array lenght == 0(all the bricks are destroyed) , then it output the text "You Win " and stop the ball from moving 
+                if(bricks.length == 0){
+                ball.speedX =0;//stop the ball movement
+                ball.speedY =0;//stop the ball movement
+                ball.xPos = 400;//centre the ball
+                ball.yPos = 300;// centre the ball
+                player1.speed=0;// stop the movement of the paddle
+               // ctx.drawImage(img,0,0,800,600)
+                ctx.font = "50px Arial";
+                ctx.fillStyle = "#e63946";
+                ctx.fillText("You Win!",300,250);
+                ctx.fillText("Your Score: " + score1,250,300);
+                retry() //Here I call the function retry , so when I press the button "Retry" , it reloads the page and it starts from the beginning
+                document.getElementById("retry").style.visibility = "visible"; // CSS property which shows the element if it was set to invisible before 
+                
+                
+                   
+                }
+            }
+        
+            function lose(){ // here I am maing a function to check if the players life equals to 0 , if yes , the player lose the game(Text appear "You Lost") and have to press the retry button to try again
+                    if(live == 0){ // If your lives == 0 
+                ball.speedX =0;//stop the ball movement
+                ball.speedY =0;//stop the ball movement
+                ball.xPos = 400;//centre the ball
+                ball.yPos = 300;// centre the ball
+                player1.speed=0;// stop the movement of the paddle
+               // ctx.drawImage(img,0,0,800,600)
+                ctx.font = "50px Arial";
+                ctx.fillStyle = "#e63946";
+                ctx.fillText("You Lost!",300,250);
+                retry() //Here I call the function retry , so when I press the button "Retry" , it reloads the page and it starts from the beginning
+                document.getElementById("retry").style.visibility = "visible"; // CSS property which shows the elemtn if it was set to invisible before 
+                
+                    }
+            }
+
+
+
+            function retry(){  //I saw how to do this from Internet , its a function  with an evenListener, which when the function is called , it reloads the page 
+                window.addEventListener("load", event => {
+                document.getElementById("retry").onclick = function() { 
+                location.reload(true);
+                }
+                });
+
+            }
+           
+        render(); 
+    
+    </script>
+</body>
+
+</html>
