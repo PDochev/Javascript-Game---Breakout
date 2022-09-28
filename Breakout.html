@@ -112,15 +112,6 @@
                 this.yPos += this.speedY;
                 this.xPos += this.speedX;
 
-                       // bounce off the bottom wall
-            //     if (this.xPos >cHeight-this.radius){
-            // this.speedY = - this.speedY;
-           
-            // }           //bounce off the top wall
-            //     else if(this.yPos<0+this.radius){
-            // this.speedY= -this.speedY;
-            
-            //     }
                 
                 if(ball.xPos + ball.radius > cWidth || ball.xPos - ball.radius < 0){        //collision detection for the ball (top,bottom,left and right wall)
                     ball.speedX = - ball.speedX
@@ -226,8 +217,6 @@
             
         }
 
-        
-               
 
             //*********************
             // Make the score board
@@ -266,10 +255,6 @@
                 
                 }
             });
-
-           
-
-            
 
             
         function render() {
@@ -327,56 +312,6 @@
                 ball.yPos = 300;
                 score1 = 0;
                 live--;
-                
-               
-            //     var bricks = [
-            //     new Bricks(45,30),
-            //     new Bricks(135,30), 
-            //     new Bricks(225,30),
-            //     new Bricks(315,30),
-            //     new Bricks(405,30),
-            //     new Bricks(495,30),
-            //     new Bricks(585,30),
-            //     new Bricks(675,30),
-            //     new Bricks(45,70),
-            //     new Bricks(135,70), 
-            //     new Bricks(225,70),
-            //     new Bricks(315,70),
-            //     new Bricks(405,70),
-            //     new Bricks(495,70),
-            //     new Bricks(585,70),
-            //     new Bricks(675,70),
-            //     new Bricks(45,110),
-            //     new Bricks(135,110), 
-            //     new Bricks(225,110),
-            //     new Bricks(315,110),
-            //     new Bricks(405,110),
-            //     new Bricks(495,110),
-            //     new Bricks(585,110),
-            //     new Bricks(675,110),
-            //     new Bricks(45,150),
-            //     new Bricks(135,150), 
-            //     new Bricks(225,150),
-            //     new Bricks(315,150),
-            //     new Bricks(405,150),
-            //     new Bricks(495,150),
-            //     new Bricks(585,150),
-            //     new Bricks(675,150),
-            //     new Bricks(45,190),
-            //     new Bricks(135,190), 
-            //     new Bricks(225,190),
-            //     new Bricks(315,190),
-            //     new Bricks(405,190),
-            //     new Bricks(495,190),
-            //     new Bricks(585,190),
-            //     new Bricks(675,190),
-            // ];
-            
-            // for (let i = 0; i < bricks.length; i++) {   
-            //     bricks[i].drawMe();
-
-                
-            // }
               
                 }
                
